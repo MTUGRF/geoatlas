@@ -87,6 +87,7 @@
       font-size: 20px; 
       font-weight: bold;  
       letter-spacing: 1px; 
+      text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
     }
 
     /*Navbar links*/
@@ -177,7 +178,7 @@
     </style>
     
     <script>
-      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe) => {
+      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap) => {
 
         // Set the portal URL
         esriConfig.portalUrl = "https://portal1-geo.sabu.mtu.edu/mtuarcgis/";
@@ -200,103 +201,47 @@
           }
         });
 
-        view.when(function() {        
+        view.when(function() { 
 
-          let fips_1888 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1888_FIPS/MapServer"
+          /*// setup the legend widget
+          let legend = new Legend({
+            view: view
           });
-           fips_1888.listMode = "hide";
-           webmap.add(fips_1888);        
+*/
+       // view.ui.add(legend, "bottom-right");
 
-          let fips_1900 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1900_FIPS/MapServer"
-          });
-          fips_1900.listMode = "hide";
-          webmap.add(fips_1900);
+        let basemapGallery = new BasemapGallery({
+          view: view,
+          source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), Basemap.fromId("satellite") ] // autocasts to LocalBasemapsSource
+        });
+        // Add widget to the top right corner of the view
+        view.ui.add(basemapGallery, {
+          position: "bottom-left"
+        });         
 
-          let fips_1908 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1908_FIPS/MapServer"
-          });
-          fips_1908.listMode = "hide";
-          webmap.add(fips_1908);
+        // print widget
+        const print = new Print({
+          view: view,
+          // specify your own print service
+          printServiceUrl:
+             "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+        });
 
-          let fips_1917 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1917_FIPS/MapServer"
-          });
-          fips_1917.listMode = "hide";
-          webmap.add(fips_1917);
+        // print expand
+         printExpand = new Expand({
+          expandIconClass: "esri-icon-printer",  // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
+          expandTooltip: "Print Map", // optional, defaults to "Expand" for English locale
+          view: view,
+          content: print
+        });
 
-          let fips_1928 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1928_FIPS/MapServer"
-          });
-          fips_1928.listMode = "hide";
-          webmap.add(fips_1928);
-
-          let fips_1942 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/KeTT_1942_FIPS/MapServer"
-          });
-          fips_1942.listMode = "hide";
-          webmap.add(fips_1942);
-
-          let fips_1949 = new TileLayer({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/Kett_19496_FIPS/MapServer?f=jsapi"
-          });
-          fips_1949.listMode = "hide";
-          webmap.add(fips_1949);
-
-          let boundary = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet HDC Boundary";
-          });
-
-          let streets = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet HDC Streets";
-          });
-
-          let cchd_buildings = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet HDC Buildings";
-          });
-
-          let grace_buildings = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet & Laurium Buildings (GRACE 2018)";
-          });
-
-          let dda = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Downtown Development Authority (DDA) Boundary";
-          });
-
-          let knhp = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Keweenaw National Historical Park (KNHP) Boundary";
-          });
-
-          let lots = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet HDC Lots";
-          });
-
-          let parcels = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Calumet & Laurium Parcels (2021)";
-          });
-
-          let roads = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Roads (GRACE 2018)";
-          });
-
-          let municipal = webmap.allLayers.find(function(layer) {          
-            return layer.title === "Municipal Boundaries (2018)";
-          });   
-
-          // reorder maps so that sanborns are in the back
-          webmap.reorder(fips_1888, 1);
-          webmap.reorder(fips_1900, 1);
-          webmap.reorder(fips_1908, 1);
-          webmap.reorder(fips_1917, 1);
-          webmap.reorder(fips_1928, 1);
-          webmap.reorder(fips_1942, 1);
-          webmap.reorder(fips_1949, 1);
-
+          view.ui.add(printExpand, "top-left");
           // LayerList
           layerList = new LayerList({
             container: document.createElement("div"),
             view: view,
+            multipleSelectionEnabled: true,
+            selectionEnabled: true
           });
 
           layerListExpand = new Expand({
@@ -354,223 +299,7 @@
           // Add the button to the UI
           view.ui.add(closeBtn, "top-left");  
 
-          $(".esri-icon-close").hide(); 
-         
-          // Create an array of years
-          var years = [1888, 1900, 1908, 1917, 1928, 1942, 1949, 1000];
-          var input = document.getElementById('slider');
-          var output = document.getElementById('output');
-          slider.oninput = function(){
-            if (years[this.value] == 1000) {
-              output.innerHTML = "Current Sanborn Year: None"
-            } else {
-              output.innerHTML = "Current Sanborn Year: " + years[this.value];
-            }            
-            // Set the visibility of the sanborns based on the slider year value
-            if (years[this.value] == "1888") {
-              fips_1888.visible = true;
-              fips_1900.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = false;
-              fips_1949.visible = false;
-            }
-
-             if (years[this.value] == "1900") {
-              fips_1900.visible = true;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = false;
-              fips_1949.visible = false;         
-            }
-
-            if (years[this.value] == "1908") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = true;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = false; 
-              fips_1949.visible = false;        
-            }
-
-            if (years[this.value] == "1917") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = true;
-              fips_1928.visible = false;
-              fips_1942.visible = false;   
-              fips_1949.visible = false;      
-            }
-
-            if (years[this.value] == "1928") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = true;
-              fips_1942.visible = false;  
-              fips_1949.visible = false;       
-            }
-
-            if (years[this.value] == "1942") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = true;  
-              fips_1949.visible = false;       
-            }
-
-            if (years[this.value] == "1949") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = false;  
-              fips_1949.visible = true;       
-            }
-
-            if (years[this.value] == "1000") {
-              fips_1900.visible = false;
-              fips_1888.visible = false;
-              fips_1908.visible = false;
-              fips_1917.visible = false;
-              fips_1928.visible = false;
-              fips_1942.visible = false;  
-              fips_1949.visible = false;       
-            }
-
-           //const activeLayer = "fips_" + years[this.value];
-           /*years.forEach((layer) => {
-            
-           if (layer != years[this.value]) {
-                console.log(layer);     
-             //console.log(layerName);
-             ("fips_" + layer).visible = false; 
-           } 
-      //console.log(element);
-  });*/
-        };
-        input.oninput();
-
-      function zoom(direction) {
-        var years = [1888, 1900, 1908, 1917, 1928, 1942, 1949, 1000];      
-        var output = document.getElementById('output');
-        var slider = $("#slider");
-        var step = parseInt(slider.attr('step'), 8);
-        var currentSliderValue = parseInt(slider.val(), 8);
-        var newStepValue = currentSliderValue + step;
-
-        if (direction === "out") {
-          newStepValue = currentSliderValue - step;
-        } else {
-          newStepValue = currentSliderValue + step;
-        }
-
-        slider.val(newStepValue).change();
-      };
-
-      $("#slider").on('input change', function(event) {
-        if (years[this.value] == 1000) {
-              output.innerHTML = "Current Sanborn Year: None"
-        } else {
-            $('#output').text("Current Sanborn Year: " + years[$(event.currentTarget).val()]);
-        }      
-        if (years[this.value] == "1888") {
-            fips_1888.visible = true;
-            fips_1900.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = false;
-            fips_1949.visible = false;
-          }
-
-           if (years[this.value] == "1900") {
-            fips_1900.visible = true;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = false;
-            fips_1949.visible = false;         
-          }
-
-          if (years[this.value] == "1908") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = true;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = false; 
-            fips_1949.visible = false;        
-          }
-
-          if (years[this.value] == "1917") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = true;
-            fips_1928.visible = false;
-            fips_1942.visible = false;   
-            fips_1949.visible = false;      
-          }
-
-          if (years[this.value] == "1928") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = true;
-            fips_1942.visible = false;  
-            fips_1949.visible = false;       
-          }
-
-          if (years[this.value] == "1942") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = true;  
-            fips_1949.visible = false;       
-          }
-
-          if (years[this.value] == "1949") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = false;  
-            fips_1949.visible = true;       
-          }
-          // if the slider value is 1000 display no sanborn map
-          if (years[this.value] == "1000") {
-            fips_1900.visible = false;
-            fips_1888.visible = false;
-            fips_1908.visible = false;
-            fips_1917.visible = false;
-            fips_1928.visible = false;
-            fips_1942.visible = false;  
-            fips_1949.visible = false;       
-          }
-     });
-
-      $( "#forwardBtn" ).click(function() {
-          zoom("in");
-      });  
-
-      $( "#backBtn" ).click(function() {
-          zoom("out");
-      }); 
+          $(".esri-icon-close").hide();       
     }); 
   });
     </script>
@@ -580,7 +309,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light">
   <a class="navbar-brand" href="https://mtugrf.github.io/hdcmap/" target="_blank" rel="noopener">
     <img src="https://portal1-geo.sabu.mtu.edu/mtuarcgis/sharing/rest/content/items/7be468c2c9d14e9f82a7ea765bda6553/resources/169144602_132543268877924_2307849967430276060_n.jpg?token=2jdDJPP-n4kGvU2MEG3mS9BKVUJDlcGjsOfR1nY6t8197bNJa5ZW2OtAeXqNNYKJKsQRW4ruEhuSt6PaEN0vdrDzXP0yilhmycBrGB-GwMAHaCLV21JDXNctSsYAql309piXs5-CDhvDgzZ7SfNzrg9SaAkvCfC1TKO79lyxX3Kju4rXGIgBuhHkt8JX25eMBC6ZPBuaz9L10N_EQWVr715NV05OuKcbRC29Y0uVE5I.&v=1697555540063" width="50" height="50" class="d-inline-block align-top" alt="">
-      &nbsp;Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas
+      &nbsp;<div id="title">Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas</div>
   </a>
   <div class="collapse navbar-collapse" id="navbarNav" style="">
         <ul class="navbar-nav mr-auto">           
@@ -595,13 +324,7 @@
         </ul> -->
     </div>
 </nav> 
-    <div id="viewDiv"></div>
-   <!--  <div class="slidecontainer">
-      <div id="output"></div>
-      <h2>1888</h2>
-  <input type="range" min="0" max="7" value="0" step="1"  class="slider" list="yearLabels" id="slider"><h2>Present</h2><button class="btn" id="backBtn"><i class="fa fa-chevron-left"></i></button>
-<button class="btn" id="forwardBtn"><i class="fa fa-chevron-right"></i></button>
-</div>  -->   
+    <div id="viewDiv"></div>  
 </div>
   </body>
 </html>
