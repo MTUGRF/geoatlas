@@ -178,13 +178,13 @@
     </style>
     
     <script>
-      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap) => {
+      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils) => {
 
         // Set the portal URL
         esriConfig.portalUrl = "https://portal1-geo.sabu.mtu.edu/mtuarcgis/";
         const webmap = new WebMap({
           portalItem: { // autocasts as new PortalItem()
-            id: "0cc9adbd507246ae9f06d3710aa7926f"
+            id: "69222fc39cc84ebaae92a446bd73da0b"
           }
         });
         const view = new MapView({
@@ -202,6 +202,92 @@
         });
 
         view.when(function() { 
+           let reflections = webmap.allLayers.find(function(layer) {          
+            return layer.title === "Geoheritage Internship Reflections";
+          });
+
+          reactiveUtils.watch(
+            () => view.popup.selectedFeature,
+            (graphic) => {
+              if (graphic) {
+                  console.log(graphic);
+                if (graphic.layer.title === "Geoheritage Internship Reflections") {
+                  const featId = graphic.attributes.objectid;
+                  console.log("reflection" + featId);
+                  reflections.queryAttachments({
+          //  attachmentTypes: ["image/jpeg", "video/mp4", "sound/mp3"],
+                    objectIds: featId
+                  }).then(function (attachmentsByFeatureId) {
+            console.log(attachmentsByFeatureId);
+            if (!attachmentsByFeatureId) {
+                return;
+             }
+            if (Object.keys(attachmentsByFeatureId).length === 0){
+              // if there are no attachments, do something here.
+              //$("#storyimg").attr("src", "");                   
+             }
+            // Display the attachments
+            Object.keys(attachmentsByFeatureId)
+              .forEach(function(objectId) {
+                const attachments = attachmentsByFeatureId[objectId];
+                attachments.forEach(function (attachment) {                   
+                  if (attachment.contentType == "image/jpeg" || attachment.contentType == "image/png" || attachment.contentType == "image/gif") {
+                   
+                    const imgarray = [];
+                    imgarray.push(attachment);
+                    const attachUrl = imgarray[0].url;
+                   // $("#storyimg").attr("src",attachUrl);
+                   // imgarray.forEach(function(image, index) {
+                      
+                      //if (index ===0) {
+                       // $("#piclabel").show();
+                        const elem = document.createElement("img");
+                        elem.src = imgarray[0].url;
+                        //document.getElementById("pictures").appendChild(elem);
+                     // }
+                    //}); 
+                    //console.log(attachUrl);
+                  } else if (attachment.contentType == "video/mp4" || attachment.contentType == "video/quicktime") {
+                 //   $("#vidlabel").show();
+                    const vidarray = [];
+                    vidarray.push(attachment);
+                    const vidUrl = vidarray[0].url;
+                 //   const video = document.createElement('video');
+                   // video.classList.add("controls");
+                   // const source = document.createElement('source');
+
+                //    source.setAttribute('src', vidUrl);
+                //    source.setAttribute('type', 'video/mp4');
+                //    document.getElementById("videos").appendChild(video);
+
+                    video.appendChild(source);  
+                    video.controls = "true";  
+                    video.style.width = "100%";
+                    video.preload = "none";
+                    //video.load();
+                  } else if (attachment.contentType == "audio/mpeg") {
+                    $("#audlabel").show();
+                    const audarray = [];
+                    audarray.push(attachment);
+                 //   const audUrl = audarray[0].url;
+                  //  const audio = document.createElement('audio');
+                 //   const source = document.createElement('source');
+
+                //    source.setAttribute('src', audUrl);
+                //    source.setAttribute('type', 'audio/mpeg');
+               //     document.getElementById("sound").appendChild(audio);
+               //     audio.appendChild(source);  
+               //     audio.controls = "true";
+               //     audio.style.width = "100%";
+               //     audio.load();
+                  }                   
+                });
+              }); 
+                })
+              }
+              }
+            }
+          );
 
           /*// setup the legend widget
           let legend = new Legend({
