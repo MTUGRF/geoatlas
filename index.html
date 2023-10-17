@@ -300,16 +300,29 @@
           });
 
           view.ui.add(layerListExpand, "top-left");
-
+         
           // setup a new swipe widget
           var swipe;     
           var swipeBtn = document.createElement('div');
+          // Find all non-basemap layers
+          const nonBasemapLayers = webmap.layers.filter(function (layer) {
+            return !layer.basemap;
+          });
+
+          // Create an array of the non-basemap layers
+          const nonBasemapLayerList = nonBasemapLayers.toArray();
+
+          // Create a leadingLayers array for the Swipe widget
+          const leadingLayers = nonBasemapLayerList.map(function (layer) {
+            return layer;
+          });
+          
           swipeBtn.className = "esri-icon-dock-left esri-widget--button esri-widget esri-interactive";
           swipeBtn.title = "Compare maps";
           swipeBtn.addEventListener('click', function(event){
             // create a new Swipe widget
               swipe = new Swipe({
-                leadingLayers: [fips_1888, fips_1900, fips_1908, fips_1917, fips_1928, fips_1942, fips_1949, boundary, streets, cchd_buildings, grace_buildings, knhp, lots, parcels, roads, municipal, dda],              
+                leadingLayers: leadingLayers,              
                 position: 35, // set position of widget to 35%
                 view: view
               });
@@ -317,6 +330,7 @@
             $(".esri-icon-close").show(); 
             $(".esri-icon-dock-left").hide();
           });
+      //  });
          
           // Add the button to the UI
           view.ui.add(swipeBtn, "top-left");  
