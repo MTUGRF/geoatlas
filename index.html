@@ -235,6 +235,7 @@
 
 
                 if (graphic.layer.title === "Geoheritage Internship Reflections") {
+                  document.getElementById("pictures").innerHTML = "";
                   const featId = graphic.attributes.objectid;
                   console.log("reflection" + featId);
                   reflections.queryAttachments({
@@ -259,18 +260,19 @@
                     const imgarray = [];
                     imgarray.push(attachment);
                     const attachUrl = imgarray[0].url;
-                    $("#main_img").attr("src",attachUrl);
-                   // imgarray.forEach(function(image, index) {
+                    //$("#main_img").attr("src",attachUrl);
+                    imgarray.forEach(function(image, index) {
                       
                       //if (index ===0) {
                        // $("#piclabel").show();
                         const elem = document.createElement("img");
-                        elem.src = imgarray[0].url;
-                        //document.getElementById("pictures").appendChild(elem);
+                        elem.src = imgarray[0].url + "?w=600";
+                        elem.className = "img-fluid img-thumbnail";
+                        document.getElementById("pictures").appendChild(elem);
                      // }
-                    //}); 
+                    }); 
                     //console.log(attachUrl);
-                  } else if (attachment.contentType == "video/mp4" || attachment.contentType == "video/quicktime") {
+                /*  } else if (attachment.contentType == "video/mp4" || attachment.contentType == "video/quicktime") {
                  //   $("#vidlabel").show();
                     const vidarray = [];
                     vidarray.push(attachment);
@@ -287,11 +289,19 @@
                     video.controls = "true";  
                     video.style.width = "100%";
                     video.preload = "none";
-                    //video.load();
-                  } else if (attachment.contentType == "audio/mpeg" || attachment.contentType == "audio/wav" || attachment.contentType == "audio/mp4") {                    
+                    //video.load();*/
+                  } else if (attachment.contentType == "audio/mpeg" || attachment.contentType == "audio/wav" || attachment.contentType == "video/mp4") {                    
                     const audarray = [];
                     audarray.push(attachment);
-                    $("#listenBtn").show();  
+                    audUrl = audarray[0].url;
+                    const audio = new Audio(audUrl);
+                    console.log(audarray);
+                    $("#listenBtn").show();
+                    const btn = document.getElementById("listenBtn");
+
+                       btn.addEventListener("click", () => {
+                          audio.play();
+                        });  
                     
                  //   const audUrl = audarray[0].url;
                   //  const audio = document.createElement('audio');
@@ -443,7 +453,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img src="..." class="img-fluid" alt="..." id="main_img">
+        <div id="pictures" class=".img-thumbnail"></div>
         <table class="table">
           <thead>
             <tr>
