@@ -209,10 +209,41 @@
           }
         });
 
+        // renderer for the geoheritage reflections layer
+        const renderer = {
+         type: "simple",
+         symbol: {
+            type: "picture-marker",
+            url: 'images/camera.png',
+            width: 20,
+            height: 20
+         }
+        }
+
+        // renderer for the mining sites layer
+        const siteRenderer = {
+         type: "simple",
+         symbol: {
+            type: "picture-marker",
+            url: 'images/mining.png',
+            width: 15,
+            height: 15
+         }
+        }
+
         view.when(function() { 
-           let reflections = webmap.allLayers.find(function(layer) {          
+          let reflections = webmap.allLayers.find(function(layer) {          
             return layer.title === "Geoheritage Internship Reflections";
           });
+
+          let sites = webmap.allLayers.find(function(layer) {          
+            return layer.title === "Keweenaw Historic Mining Locations and Settlements";
+          });
+
+          reflections.renderer = renderer;
+          sites.renderer = siteRenderer;
+
+          let audarray;
           // what the popup for a selected feature 
           reactiveUtils.watch(
             () => view.popup.selectedFeature,
@@ -243,14 +274,14 @@
                   $('#q7').html(q7);
                   $('#q8').html(q8);
                   $('#q9').html(q9);
-                  $('#q10').html(q10);
-
-                  
-                   popupModal.show()
+                  $('#q10').html(q10);             
 
 
                 if (graphic.layer.title === "Geoheritage Internship Reflections") {
+                   audarray = [];
+                   popupModal.show();
                   document.getElementById("pictures").innerHTML = "";
+                  $("#listenBtn").hide();
                   const featId = graphic.attributes.objectid;
                   console.log("reflection" + featId);
                   reflections.queryAttachments({
@@ -306,7 +337,7 @@
                     video.preload = "none";
                     //video.load();*/
                   } else if (attachment.contentType == "audio/mpeg" || attachment.contentType == "audio/wav" || attachment.contentType == "video/mp4") {                    
-                    const audarray = [];
+                    
                     audarray.push(attachment);
                     audUrl = audarray[0].url;
                     const audio = new Audio(audUrl);
