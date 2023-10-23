@@ -308,13 +308,18 @@
                     const attachUrl = imgarray[0].url;
                     //$("#main_img").attr("src",attachUrl);
                     imgarray.forEach(function(image, index) {
+                       // create a new anchor element 
+                       const anchor = document.createElement("a");
+                       anchor.href = imgarray[0].url; // Set the href to the full-size image URL
+                       anchor.target = "_blank";
                       
                       //if (index ===0) {
                        // $("#piclabel").show();
                         const elem = document.createElement("img");
                         elem.src = imgarray[0].url + "?w=600";
-                        elem.className = "img-fluid img-thumbnail";
-                        document.getElementById("pictures").appendChild(elem);
+                        elem.className = "img-fluid img-thumbnail";   
+                        anchor.appendChild(elem);                    
+                        document.getElementById("pictures").appendChild(anchor);
                      // }
                     }); 
                     //console.log(attachUrl);
@@ -341,7 +346,7 @@
                     audarray.push(attachment);
                     audUrl = audarray[0].url;
                     const audio = new Audio(audUrl);
-                    console.log(audarray);
+                    console.log("audio files" + audarray);
                     $("#listenBtn").show();
                     const btn = document.getElementById("listenBtn");
 
