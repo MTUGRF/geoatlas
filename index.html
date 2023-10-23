@@ -182,7 +182,7 @@
     </style>
     
     <script>
-      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils) => {
+      require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils", "esri/portal/Portal"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils, Portal) => {
 
         var popupModal = new bootstrap.Modal(document.getElementById('modal'))
 
@@ -243,7 +243,6 @@
           reflections.renderer = renderer;
           sites.renderer = siteRenderer;
 
-          let audarray;
           // what the popup for a selected feature 
           reactiveUtils.watch(
             () => view.popup.selectedFeature,
@@ -277,11 +276,11 @@
                   $('#q10').html(q10);             
 
 
-                if (graphic.layer.title === "Geoheritage Internship Reflections") {
-                   audarray = [];
+                if (graphic.layer.title === "Geoheritage Internship Reflections") {                  
                    popupModal.show();
-                  document.getElementById("pictures").innerHTML = "";
+                  document.getElementById("pictures").innerHTML = "";                 
                   $("#listenBtn").hide();
+                  $("#modalfooter").hide();
                   const featId = graphic.attributes.objectid;
                   console.log("reflection" + featId);
                   reflections.queryAttachments({
@@ -342,12 +341,15 @@
                     video.preload = "none";
                     //video.load();*/
                   } else if (attachment.contentType == "audio/mpeg" || attachment.contentType == "audio/wav" || attachment.contentType == "video/mp4") {                    
-                    
+                    const audarray = [];
                     audarray.push(attachment);
+                    console.log(audarray.length);
                     audUrl = audarray[0].url;
                     const audio = new Audio(audUrl);
-                    console.log("audio files" + audarray);
+                    console.log("audio files" + audarray[0].url);
+                    $('.modal-footer').show(); 
                     $("#listenBtn").show();
+
                     const btn = document.getElementById("listenBtn");
 
                        btn.addEventListener("click", () => {
@@ -379,11 +381,18 @@
             view: view
           });
 */
-       // view.ui.add(legend, "bottom-right");        
+       // view.ui.add(legend, "bottom-right");
+
+       const customBasemap = new Basemap({
+  portalItem: {
+    id: "6499e3d99bca49e3aab71b53cfde4e53"
+  }
+})        
 
         let basemapGallery = new BasemapGallery({
           view: view,
-          source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), Basemap.fromId("satellite") ] // autocasts to LocalBasemapsSource
+           source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
+           source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), customBasemap ] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
@@ -505,14 +514,7 @@
       </div>
       <div class="modal-body">
         <div id="pictures" class=".img-thumbnail"></div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col"></th>
-              
-            </tr>
-          </thead>
+        <table class="table table-striped table-bordered">         
           <tbody>
             <tr>
               <th scope="row">Does this place have another name?</th>
@@ -558,7 +560,7 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer">        
+      <div class="modal-footer d-flex justify-content-center" id="modalfooter">        
         <button type="button" class="btn btn-primary" id="listenBtn"><i class="fa-solid fa-volume-high fa-2xl"></i>  Hear this place</button>
       </div>
     </div>
