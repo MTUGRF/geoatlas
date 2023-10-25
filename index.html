@@ -5,14 +5,16 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas</title>
     <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">     
+         
     <script src="https://kit.fontawesome.com/36f08f062d.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.0/viewer.css" integrity="sha512-tYobxYoCZxl0CejYCA8c4w8HRcg3wRoKaGYIQ/2ILqyB4vRqMd/Jmehxod1dQJ2uE/9rDY9pG48isM8SHEAwDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />    
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.0/viewer.js" integrity="sha512-psAniLUS9J4A5KNQiSt9XMNeVSMx/Rz89vQJqeYlOIiTR5WK8zU/8EPwAKt+522eeV04QUzIwX5VrAW10FbdeQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script src="https://js.arcgis.com/4.27/"></script>
     <style>    
@@ -26,45 +28,10 @@
       margin-top: 56px;        
       width: 100%;
     }
-    .slider {
-      -webkit-appearance: none;
-      width: 60%;
-      height: 15px;
-      border-radius: 5px;  
-      background: #d3d3d3;
-      outline: none;      
-      -webkit-transition: .2s;
-      transition: opacity .2s;
-    }
 
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%; 
-      background: #3996b8;
-      cursor: grabbing;
-    }
-
-    .slider::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background: #3996b8;
-      cursor: pointer;
-    }
-
-    .slidecontainer {
-      position: absolute;
-      bottom: 30px;
-      left: 10px;
-      width: 37%;
-      background-color: #f3f3f3;
-      border: 2px solid black;
-      padding: 5px;
-
-    }
+     .esri-ui .esri-popup  {
+      display:  none !important;
+    }      
 
     h2 {
       display: inline-block;
@@ -164,27 +131,47 @@
     background-color: #EF973B;
   }
 
-
-  @media only screen and (max-width: 600px) {  
-    .slidecontainer {
-      width:  95%; 
-    }  
-  }
-
-   @media only screen and (max-width: 768px) {  
-    .slidecontainer {
-      width:  95%;      
-    }  
-    .esri-popup__main-container esri-widget esri-popup--shadow {
-      z-index:  99999999999999999999999999 !important;
+   .modal-dialog {
+      position: absolute !important;
+      top: 0px;
+      right: 15px;
+      z-index: 9999999999999999999999999 !important;
     }
-  }        
+
+    .modal-backdrop {
+      display: none !important;
+      zindex-modal: -1;
+    }
+
+    .modal-header {
+      background-color: #EF973B !important ;
+      color: white;
+    }
+
+    #storyModal .modal-header {
+      background-color: #809955 !important ;
+      color: white;
+    }
+
+    #storyModal .modal-footer {
+      background-color: #809955 !important ;
+      color: white;
+    }
+
+    .btn-close {
+      opacity: 100 !important;
+    }
+
+
+     
     </style>
     
     <script>
       require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils", "esri/portal/Portal"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils, Portal) => {
 
         var popupModal = new bootstrap.Modal(document.getElementById('modal'))
+
+        var storyModal = new bootstrap.Modal(document.getElementById('storyModal'))
 
         $("#listenBtn").hide();
 
@@ -231,9 +218,24 @@
          }
         }
 
+        // renderer for the mining sites layer
+        const storyRenderer = {
+         type: "simple",
+         symbol: {
+            type: "picture-marker",
+            url: 'images/story.png',
+            width: 20,
+            height: 20
+         }
+        }
+
         view.when(function() { 
           let reflections = webmap.allLayers.find(function(layer) {          
             return layer.title === "Geoheritage Internship Reflections";
+          });
+
+          let storyPoints = webmap.allLayers.find(function(layer) {          
+            return layer.title === "Geoheritage Internship StoryMap Points";
           });
 
           let sites = webmap.allLayers.find(function(layer) {          
@@ -241,6 +243,7 @@
           });
 
           reflections.renderer = renderer;
+          storyPoints.renderer = storyRenderer;
           sites.renderer = siteRenderer;
 
           // what the popup for a selected feature 
@@ -249,6 +252,7 @@
             (graphic) => {
               if (graphic) {
                   console.log(graphic);
+                  if (graphic.layer.title === "Geoheritage Internship Reflections") {  
                   // create variables from the graphic's attributes
                   var q1 = graphic.attributes.does_this_place_have_another_na;
                   var q2 = graphic.attributes.what_rocks_are_present_here;
@@ -273,14 +277,19 @@
                   $('#q7').html(q7);
                   $('#q8').html(q8);
                   $('#q9').html(q9);
-                  $('#q10').html(q10);             
-
-
-                if (graphic.layer.title === "Geoheritage Internship Reflections") {                  
+                  $('#q10').html(q10);  
+                                
                    popupModal.show();
+                   storyModal.hide();
+                   // Get a reference to the modal element
+                var modal = document.getElementById('modal');
+
+                // Remove the "show" class from the modal
+                modal.classList.remove('modal');
+
                   document.getElementById("pictures").innerHTML = "";                 
                   $("#listenBtn").hide();
-                  $("#modalfooter").hide();
+                  $(".modal-footer").hide();
                   const featId = graphic.attributes.objectid;
                   console.log("reflection" + featId);
                   reflections.queryAttachments({
@@ -310,36 +319,16 @@
                        // create a new anchor element 
                        const anchor = document.createElement("a");
                        anchor.href = imgarray[0].url; // Set the href to the full-size image URL
-                       anchor.target = "_blank";
+                       anchor.target = "_blank";  
                       
-                      //if (index ===0) {
-                       // $("#piclabel").show();
                         const elem = document.createElement("img");
                         elem.src = imgarray[0].url + "?w=600";
                         elem.className = "img-fluid img-thumbnail";   
                         anchor.appendChild(elem);                    
                         document.getElementById("pictures").appendChild(anchor);
-                     // }
+                     
                     }); 
-                    //console.log(attachUrl);
-                /*  } else if (attachment.contentType == "video/mp4" || attachment.contentType == "video/quicktime") {
-                 //   $("#vidlabel").show();
-                    const vidarray = [];
-                    vidarray.push(attachment);
-                    const vidUrl = vidarray[0].url;
-                 //   const video = document.createElement('video');
-                   // video.classList.add("controls");
-                   // const source = document.createElement('source');
-
-                //    source.setAttribute('src', vidUrl);
-                //    source.setAttribute('type', 'video/mp4');
-                //    document.getElementById("videos").appendChild(video);
-
-                    video.appendChild(source);  
-                    video.controls = "true";  
-                    video.style.width = "100%";
-                    video.preload = "none";
-                    //video.load();*/
+                  
                   } else if (attachment.contentType == "audio/mpeg" || attachment.contentType == "audio/wav" || attachment.contentType == "video/mp4") {                    
                     const audarray = [];
                     audarray.push(attachment);
@@ -354,40 +343,39 @@
 
                        btn.addEventListener("click", () => {
                           audio.play();
-                        });  
-                    
-                 //   const audUrl = audarray[0].url;
-                  //  const audio = document.createElement('audio');
-                 //   const source = document.createElement('source');
-
-                //    source.setAttribute('src', audUrl);
-                //    source.setAttribute('type', 'audio/mpeg');
-               //     document.getElementById("sound").appendChild(audio);
-               //     audio.appendChild(source);  
-               //     audio.controls = "true";
-               //     audio.style.width = "100%";
-               //     audio.load();
+                        });                   
                   }                   
                 });
               }); 
                 })
+              } else if (graphic.layer.title === "Geoheritage Internship StoryMap Points"){
+                var author = graphic.attributes.storymap_author;
+                var link = graphic.attributes.storymap_link;
+                var storyTitle = graphic.attributes.storymap_title;
+
+                $('#maptitle').html(storyTitle);
+                $('#rowtitle').html(storyTitle);
+                $('#author').html(author);
+                var link = document.getElementById('storyurl');
+                link.href = graphic.attributes.storymap_link; 
+                var smodal = document.getElementById('storyModal');
+
+                // Remove the "show" class from the modal
+                smodal.classList.remove('modal');
+
+                storyModal.show();
+                popupModal.hide();
+                   
               }
-              }
+              } 
             }
           );
-
-          /*// setup the legend widget
-          let legend = new Legend({
-            view: view
-          });
-*/
-       // view.ui.add(legend, "bottom-right");
-
+       // setup the basemaps for the custom gallery 
        const customBasemap = new Basemap({
-  portalItem: {
-    id: "6499e3d99bca49e3aab71b53cfde4e53"
-  }
-})        
+        portalItem: {
+          id: "6499e3d99bca49e3aab71b53cfde4e53"
+        }
+      })        
 
         let basemapGallery = new BasemapGallery({
           view: view,
@@ -488,24 +476,55 @@
      <!-- Main navbar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light">
   <a class="navbar-brand" href="https://mtugrf.github.io/hdcmap/" target="_blank" rel="noopener">
-    <img src="https://portal1-geo.sabu.mtu.edu/mtuarcgis/sharing/rest/content/items/7be468c2c9d14e9f82a7ea765bda6553/resources/169144602_132543268877924_2307849967430276060_n.jpg?token=2jdDJPP-n4kGvU2MEG3mS9BKVUJDlcGjsOfR1nY6t8197bNJa5ZW2OtAeXqNNYKJKsQRW4ruEhuSt6PaEN0vdrDzXP0yilhmycBrGB-GwMAHaCLV21JDXNctSsYAql309piXs5-CDhvDgzZ7SfNzrg9SaAkvCfC1TKO79lyxX3Kju4rXGIgBuhHkt8JX25eMBC6ZPBuaz9L10N_EQWVr715NV05OuKcbRC29Y0uVE5I.&v=1697555540063" width="50" height="50" class="d-inline-block align-top" alt="">
+    <img src="images/logo.jpg" width="50" height="50" class="d-inline-block align-top" alt="">
       &nbsp;<div id="title">Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas</div>
   </a>
   <div class="collapse navbar-collapse" id="navbarNav" style="">
         <ul class="navbar-nav mr-auto">           
         </ul>
-       <!--  <ul class="navbar-nav">
+        <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="http://www.villageofcalumet.com/historic-district-commission.html" target="_blank" rel="noopener">Calumet HDC</a>
+                <a class="nav-link" href="https://portal1-geo.sabu.mtu.edu/mtuarcgis/apps/sites/#/geoheritage-and-two-eyed-seeing" target="_blank" rel="noopener">Two-Eyed Seeing</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="https://www.mtu.edu/greatlakes/shared-facilities/geospatial/" target="_blank" rel="noopener">MTU GRF</a>
             </li>            
-        </ul> -->
+        </ul>
     </div>
 </nav> 
     <div id="viewDiv"></div>  
-    <div class="modal" tabindex="-1" id="modal">
+    <div class="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" id="storyModal">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Geoheritage StoryMap: <div id="maptitle"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">        
+        <table class="table table-striped table-bordered" style="margin-top: 5px">         
+          <tbody>
+            <tr>
+              <th scope="row">StoryMap Title</th>
+              <td><div id="rowtitle"></div></td>              
+            </tr>
+            <tr>
+              <th scope="row">StoryMap Author</th>
+              <td><div id="author"></div></td>             
+            </tr> 
+            <tr>
+              <th scope="row">StoryMap Link</th>
+              <td><a href="url" id="storyurl"  target="_blank">View StoryMap</a></td>             
+            </tr>            
+            </tr>            
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+</div>
+
+    <div class="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" id="modal">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -514,7 +533,7 @@
       </div>
       <div class="modal-body">
         <div id="pictures" class=".img-thumbnail"></div>
-        <table class="table table-striped table-bordered">         
+        <table class="table table-striped table-bordered" style="margin-top: 5px">         
           <tbody>
             <tr>
               <th scope="row">Does this place have another name?</th>
