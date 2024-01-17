@@ -38,6 +38,16 @@
       font-size: 18px;
       padding: 5px;
     }
+
+    h4 {
+      display: inline-block;
+      padding-left: 5px;
+      color: white;
+    }
+
+    .modal-footer {
+      background-color: #1F5983;
+    }
     
     /*Navbar height*/
     .navbar {
@@ -170,6 +180,7 @@
       require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils", "esri/portal/Portal"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils, Portal) => {
 
           $("#sound").hide(); // sound button hidden by default
+          $("#listen").hide(); // listen test hidden by default
 
         var popupModal = new bootstrap.Modal(document.getElementById('modal'))
 
@@ -257,6 +268,7 @@
                   if (graphic.layer.title === "Geoheritage Internship Reflections") {  
                     document.getElementById("sound").innerHTML = ""; 
                     $("#sound").hide(); // sound button hidden by default
+                    $("#listen").hide(); // listen button hidden by default
                   // create variables from the graphic's attributes
                   var q1 = graphic.attributes.does_this_place_have_another_na;
                   var q2 = graphic.attributes.what_rocks_are_present_here;
@@ -355,6 +367,7 @@
                     //audio.style.width = "100%";
                     audio.load();
                     $("#sound").show();
+                    $("#listen").show();
 
                     const btn = document.getElementById("listenBtn");
 
@@ -600,7 +613,7 @@
         </table>
       </div>
       <div class="modal-footer d-flex justify-content-center" id="modalfooter">  
-        <center><i class="fa-solid fa-volume-high fa-xl"></i>  <b>Hear This Place</b></center>
+        <div id="listen"><center><i class="fa-solid fa-volume-high fa-2xl" style="color: white"></i>  <h4>Hear This Place</h4></center></div>
         <div id="sound"></div>              
       </div>
     </div>
