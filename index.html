@@ -169,6 +169,8 @@
     <script>
       require(["esri/Map", "esri/views/MapView", "esri/config", "esri/WebMap", "esri/layers/TileLayer", "esri/widgets/LayerList", "esri/widgets/Expand", "esri/widgets/Swipe", "esri/widgets/Legend", "esri/widgets/Print", "esri/widgets/BasemapGallery", "esri/Basemap", "esri/core/reactiveUtils", "esri/portal/Portal"], (Map, MapView, esriConfig, WebMap, TileLayer, LayerList, Expand, Swipe, Legend, Print, BasemapGallery, Basemap, reactiveUtils, Portal) => {
 
+          $("#sound").hide(); // sound button hidden by default
+
         var popupModal = new bootstrap.Modal(document.getElementById('modal'))
 
         var storyModal = new bootstrap.Modal(document.getElementById('storyModal'))
@@ -253,6 +255,8 @@
               if (graphic) {
                   console.log(graphic);
                   if (graphic.layer.title === "Geoheritage Internship Reflections") {  
+                    document.getElementById("sound").innerHTML = ""; 
+                    $("#sound").hide(); // sound button hidden by default
                   // create variables from the graphic's attributes
                   var q1 = graphic.attributes.does_this_place_have_another_na;
                   var q2 = graphic.attributes.what_rocks_are_present_here;
@@ -334,15 +338,31 @@
                     audarray.push(attachment);
                     console.log(audarray.length);
                     audUrl = audarray[0].url;
-                    const audio = new Audio(audUrl);
+                    //const audio = new Audio(audUrl);
                     console.log("audio files" + audarray[0].url);
                     $('.modal-footer').show(); 
                     $("#listenBtn").show();
+
+                    const audio = document.createElement('audio');
+                    const source = document.createElement('source');
+                    const type = attachment.contentType;
+
+                    source.setAttribute('src', audUrl);
+                    source.setAttribute('type', 'audio/mpeg');
+                    document.getElementById("sound").appendChild(audio);
+                    audio.appendChild(source);  
+                    audio.controls = "true";
+                    //audio.style.width = "100%";
+                    audio.load();
+                    $("#sound").show();
 
                     const btn = document.getElementById("listenBtn");
 
                        btn.addEventListener("click", () => {
                           audio.play();
+                          $("#sound").show();
+                          $("#listenBtn").hide();
+
                         });                   
                   }                   
                 });
@@ -449,9 +469,9 @@
             view.ui.add(swipe);
             $(".esri-icon-close").show(); 
             $(".esri-icon-dock-left").hide();
-          });
-      //  });
-         
+          });    //  });       
+        
+
           // Add the button to the UI
           view.ui.add(swipeBtn, "top-left");  
 
@@ -579,8 +599,9 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer d-flex justify-content-center" id="modalfooter">        
-        <button type="button" class="btn btn-primary" id="listenBtn"><i class="fa-solid fa-volume-high fa-2xl"></i>  <b>HEAR THIS PLACE</b></button>
+      <div class="modal-footer d-flex justify-content-center" id="modalfooter">  
+        <center><i class="fa-solid fa-volume-high fa-xl"></i>  <b>Hear This Place</b></center>
+        <div id="sound"></div>              
       </div>
     </div>
   </div>
