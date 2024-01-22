@@ -403,17 +403,31 @@
               } 
             }
           );
+
        // setup the basemaps for the custom gallery 
        const customBasemap = new Basemap({
         portalItem: {
           id: "6499e3d99bca49e3aab71b53cfde4e53"
         }
-      })        
+      })  
+      
+       const topoBasemap = new Basemap({
+        portalItem: {
+          id: "9defe445862a413a8310829567e5d407"
+        }
+      })
+
+        const gloBasemap = new Basemap({
+        portalItem: {
+          id: "3a42a7a6624d46aa9873fa4d8e4aa832"
+        }
+      })              
+   
 
         let basemapGallery = new BasemapGallery({
           view: view,
            source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
-           source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid"), customBasemap ] // autocasts to LocalBasemapsSource
+           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
