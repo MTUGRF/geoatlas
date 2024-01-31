@@ -67,6 +67,11 @@
       text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
     }
 
+    .navbar-nav {
+      position: absolute;
+      right: 10px;
+    }
+
     /*Navbar links*/
     .navbar-light .navbar-nav .nav-link {
       color: #d9dde0;
@@ -172,7 +177,10 @@
       opacity: 100 !important;
     }
 
-
+    #sitesModal .modal-header {
+      background-color: white !important ;
+      color: black;
+    }
      
     </style>
     
@@ -185,6 +193,8 @@
         var popupModal = new bootstrap.Modal(document.getElementById('modal'))
 
         var storyModal = new bootstrap.Modal(document.getElementById('storyModal'))
+
+        var sitesModal = new bootstrap.Modal(document.getElementById('sitesModal'))
 
         $("#listenBtn").hide();
 
@@ -297,6 +307,7 @@
                                 
                    popupModal.show();
                    storyModal.hide();
+                   sitesModal.hide();
                    // Get a reference to the modal element
                 var modal = document.getElementById('modal');
 
@@ -395,10 +406,20 @@
 
                 // Remove the "show" class from the modal
                 smodal.classList.remove('modal');
-
+                sitesModal.hide();
                 storyModal.show();
                 popupModal.hide();
                    
+              } else if (graphic.layer.title === "Keweenaw Historic Mining Locations and Settlements") {
+                console.log(graphic);
+                var name = graphic.attributes.settlementname;
+                $('#sitetitle').html(name);
+                $('#sitename').html(name);
+                var siteModal = document.getElementById('sitesModal');
+                siteModal.classList.remove('modal');
+                sitesModal.show();
+                storyModal.hide();
+                popupModal.hide();
               }
               } 
             }
@@ -421,13 +442,19 @@
         portalItem: {
           id: "3a42a7a6624d46aa9873fa4d8e4aa832"
         }
-      })              
+      })   
+
+      const nautBasemap = new Basemap({
+        portalItem: {
+          id: "f24940e66e74482cb4608b77099d0f4f"
+        }
+      })           
    
 
         let basemapGallery = new BasemapGallery({
           view: view,
            source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
-           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap] // autocasts to LocalBasemapsSource
+           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
@@ -522,24 +549,45 @@
   <body>
      <!-- Main navbar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="https://mtugrf.github.io/hdcmap/" target="_blank" rel="noopener">
+  <a class="navbar-brand" href="https://mtugrf.github.io/geoatlas/" target="_blank" rel="noopener">
     <img src="images/logo.jpg" width="50" height="50" class="d-inline-block align-top" alt="">
       &nbsp;<div id="title">Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas</div>
   </a>
-  <div class="collapse navbar-collapse" id="navbarNav" style="">
-     <!--    <ul class="navbar-nav mr-auto">           
-        </ul>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="https://portal1-geo.sabu.mtu.edu/mtuarcgis/apps/sites/#/geoheritage-and-two-eyed-seeing" target="_blank" rel="noopener">Two-Eyed Seeing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://www.mtu.edu/greatlakes/shared-facilities/geospatial/" target="_blank" rel="noopener">MTU GRF</a>
-            </li>            
-        </ul> -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="#">About the Atlas</a>
+        <a class="nav-link" href="#">About the Data</a>        
+      </div>
     </div>
 </nav> 
     <div id="viewDiv"></div>  
+
+    <div class="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" id="sitesModal">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><div id="sitetitle"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">        
+        <table class="table table-striped table-bordered" style="margin-top: 5px">         
+          <tbody>
+            <tr>
+              <th scope="row">Keweenaw Heritage Site Name</th>
+              <td><div id="sitename"></div></td>              
+            </tr>          
+            </tr>            
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+</div>
+
     <div class="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" id="storyModal">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
