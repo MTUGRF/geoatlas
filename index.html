@@ -457,13 +457,19 @@
         portalItem: {
           id: "296f36d2758a4fb6b356f8434d677239"
         }
-      })          
+      })    
+
+      const geolBasemap = new Basemap({
+        portalItem: {
+          id: "c4df9bd6e3d0489c978c9a6735623bcc"
+        }
+      })           
    
 
         let basemapGallery = new BasemapGallery({
           view: view,
            source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
-           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap, tryggBasemap] // autocasts to LocalBasemapsSource
+           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap, tryggBasemap, geolBasemap] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
