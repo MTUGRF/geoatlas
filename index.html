@@ -45,7 +45,7 @@
       color: white;
     }
 
-    .modal-footer {
+    #modal .modal-footer {
       background-color: #1F5983;
     }
     
@@ -146,7 +146,7 @@
     background-color: #EF973B;
   }
 
-   .modal-dialog {
+   #modal .modal-dialog {
       position: absolute !important;
       top: 0px;
       right: 15px;
@@ -158,7 +158,7 @@
       zindex-modal: -1;
     }
 
-    .modal-header {
+    #modal .modal-header {
       background-color: #EF973B !important ;
       color: white;
     }
@@ -195,6 +195,10 @@
         var storyModal = new bootstrap.Modal(document.getElementById('storyModal'))
 
         var sitesModal = new bootstrap.Modal(document.getElementById('sitesModal'))
+
+        var splashModal = new bootstrap.Modal(document.getElementById('splashModal'))
+
+        splashModal.show();
 
         $("#listenBtn").hide();
 
@@ -382,12 +386,11 @@
 
                     const btn = document.getElementById("listenBtn");
 
-                       btn.addEventListener("click", () => {
-                          audio.play();
-                          $("#sound").show();
-                          $("#listenBtn").hide();
-
-                        });                   
+                     btn.addEventListener("click", () => {
+                        audio.play();
+                        $("#sound").show();
+                        $("#listenBtn").hide();
+                     });                   
                   }                   
                 });
               }); 
@@ -448,13 +451,19 @@
         portalItem: {
           id: "f24940e66e74482cb4608b77099d0f4f"
         }
-      })           
+      })   
+
+      const tryggBasemap = new Basemap({
+        portalItem: {
+          id: "296f36d2758a4fb6b356f8434d677239"
+        }
+      })          
    
 
         let basemapGallery = new BasemapGallery({
           view: view,
            source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
-           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap] // autocasts to LocalBasemapsSource
+           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap, tryggBasemap] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
@@ -551,7 +560,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light">
   <a class="navbar-brand" href="https://mtugrf.github.io/geoatlas/" target="_blank" rel="noopener">
     <img src="images/logo.jpg" width="50" height="50" class="d-inline-block align-top" alt="">
-      &nbsp;<div id="title">Keweenaw Geoheritage & Two-Eyed Seeing GeoAtlas</div>
+      &nbsp;<div id="title">Keweenaw Geoheritage GeoAtlas</div>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -619,6 +628,56 @@
 </div>
 </div>
 
+<!-- Modal -->
+<div class="modal" id="splashModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Welcome to the Keweenaw Geoheritage Geoatlas!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Tabs navs -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Explore the Data</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Geoheritage Reflections</button>
+          </li>
+        </ul>
+        <!-- Tabs content -->
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <p class="lead">The Keweenaw region was formed by a constellation of geologic processes spanning a billion years, ranging from some of the largest lava flows on Earth, the formation of Lake Superior, and the largest known native copper deposit on Earth. These processes have shaped, and continue to shape the ancestral, traditional, and contemporary lands, waters, and livelihoods of many Indigenous nations, including the Anishinaabeg— the Three Fires Confederacy of Ojibwe, Odawa, and Potawatomi peoples and their many more-than-human relatives. This is also the site of the oldest metal workings in the Western Hemisphere. The Copper Boom and associated European diaspora to the Keweenaw also have a significant place in local history. As such geology has shaped politics, culture, economies, and our sense of place for thousands of years. These varied relationships with the landscape are foundational to the landscape’s past, present, and future and provide opportunities to broaden Earth science, local, and cultural literacies. </p>
+<p class="lead">Geoheritage emphasizes the importance of the varied personal values people have for geologic features and explores the wide-ranging relationships people have with landscape. As such, this atlas serves as an accessible geoheritage database that explores the geographic, cultural, and industrial heritage of the Western Upper Peninsula region, with the current boundaries of Keweenaw, Houghton, and Baraga Counties. </p>
+<p class="lead">The geoatlas is for everyone! Educators and students, the scientific community, local tourist entities, land use planners, and the broader public are supported in learning multiple ways of knowing about our place. This is a living atlas that will continue to be updated as more layers and stories become available. 
+While exploring the atlas, think about your own relationship with geology, with the landscape.</p> 
+<div class="alert alert-dark" role="alert">
+  <h4 class="alert-heading">Our Values</h4>  
+  <hr>  
+  <p class="mb-0">Educational opportunities for increased Earth science, local, and cultural literacies</p>
+  <p class="mb-0"> Deepened understanding of community issues rooted in Earth systems processes </p>
+  <p class="mb-0">Equitable community partnerships that elevate multiple ways of knowing about our place </p> 
+  <p class="mb-0">Stewardship, wellness, and deepened relationships with landscape</p>
+</div>
+<p class="lead">This work was facilitated as a partnership between the Keweenaw Bay Indian Community's Natural Resources Department and Tribal Historic Preservation Office, and Michigan Tech's Great Lakes Research Center and Geospatial Research Facility. Funding is provided by the National Science Foundation (Award Number: 2136139).</p>
+
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile tab content...</div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Contact tab content...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>        
+      </div>
+    </div>
+  </div>
+</div>
+ 
     <div class="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" id="modal">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
