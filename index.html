@@ -465,11 +465,16 @@
         }
       })           
    
+      const elevBasemap = new Basemap({
+        portalItem: {
+          id: "b7a5a9af2715408887440e797c0df9fe"
+        }
+      })  
 
         let basemapGallery = new BasemapGallery({
           view: view,
            source: new Portal({url: "https://portal1-geo.sabu.mtu.edu/mtuarcgis/"}), // autocasts to PortalBasemapsSource
-           source: [Basemap.fromId("hybrid"), gloBasemap, topoBasemap, nautBasemap, tryggBasemap, geolBasemap] // autocasts to LocalBasemapsSource
+           source: [Basemap.fromId("hybrid"), gloBasemap, elevBasemap, nautBasemap, tryggBasemap, geolBasemap] // autocasts to LocalBasemapsSource
         });
         // Add widget to the top right corner of the view
         view.ui.add(basemapGallery, {
