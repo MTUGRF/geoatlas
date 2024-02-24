@@ -28,10 +28,10 @@
       width: 100%;
     }
 
-     .esri-ui .esri-popup  {
+     /*.esri-ui .esri-popup  {
       display:  none !important;
     }      
-
+*/
     h2 {
       display: inline-block;
       font-size: 18px;
@@ -180,6 +180,20 @@
       background-color: white !important ;
       color: black;
     }
+
+    #storyModal .modal-dialog {
+      position: absolute !important;
+      top: 0px;
+      right: 15px;
+      z-index: 9999999999999999999999999 !important;
+    }
+
+    #sitesModal .modal-dialog {
+      position: absolute !important;
+      top: 0px;
+      right: 15px;
+      z-index: 9999999999999999999999999 !important;
+    }
      
     </style>
     
@@ -280,6 +294,7 @@
                   console.log(graphic);
                   if (graphic.layer.title === "Geoheritage Internship Reflections") {  
                     document.getElementById("sound").innerHTML = ""; 
+                    $(".esri-ui .esri-popup").css("display", "none");
                     $("#sound").hide(); // sound button hidden by default
                     $("#listen").hide(); // listen button hidden by default
                   // create variables from the graphic's attributes
@@ -395,6 +410,7 @@
               }); 
                 })
               } else if (graphic.layer.title === "Geoheritage Internship StoryMap Points"){
+                $(".esri-ui .esri-popup").css("display", "none");
                 var author = graphic.attributes.storymap_author;
                 var link = graphic.attributes.storymap_link;
                 var storyTitle = graphic.attributes.storymap_title;
@@ -413,6 +429,7 @@
                 popupModal.hide();
                    
               } else if (graphic.layer.title === "Keweenaw Historic Mining Locations and Settlements") {
+                $(".esri-ui .esri-popup").css("display", "none");
                 console.log(graphic);
                 var name = graphic.attributes.settlementname;
                 $('#sitetitle').html(name);
@@ -422,6 +439,11 @@
                 sitesModal.show();
                 storyModal.hide();
                 popupModal.hide();
+              } else {
+                $(".esri-ui .esri-popup").css("display", "block");
+                popupModal.hide();
+                storyModal.hide();
+                sitesModal.hide();
               }
               } 
             }
@@ -646,7 +668,12 @@
         <!-- Tabs content -->
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <p class="lead">The Keweenaw region was formed by a constellation of geologic processes spanning a billion years, ranging from some of the largest lava flows on Earth, the formation of Lake Superior, and the largest known native copper deposit on Earth. These processes have shaped, and continue to shape the ancestral, traditional, and contemporary lands, waters, and livelihoods of many Indigenous nations, including the Anishinaabeg— the Three Fires Confederacy of Ojibwe, Odawa, and Potawatomi peoples and their many more-than-human relatives. This is also the site of the oldest metal workings in the Western Hemisphere. The Copper Boom and associated European diaspora to the Keweenaw also have a significant place in local history. As such geology has shaped politics, culture, economies, and our sense of place for thousands of years. These varied relationships with the landscape are foundational to the landscape’s past, present, and future and provide opportunities to broaden Earth science, local, and cultural literacies. </p>
+            <center><b>GeoAtlas Basics</b></center>
+            <p class="lead">
+The GeoAtlas is an interactive webmap that allows users to explore a curated list of geographic, cultural, and industrial heritage data layers for Keweenaw, Houghton, and Baraga Counties. Below you will find some basic instructions for navigating the GeoAtlas.
+Navigation 
+• To navigate the GeoAtlas, click and drag the map with the mouse cursor.
+ </p>
 <p class="lead">Geoheritage emphasizes the importance of the varied personal values people have for geologic features and explores the wide-ranging relationships people have with landscape. As such, this atlas serves as an accessible geoheritage database that explores the geographic, cultural, and industrial heritage of the Western Upper Peninsula region, with the current boundaries of Keweenaw, Houghton, and Baraga Counties. </p>
 <p class="lead">The geoatlas is for everyone! Educators and students, the scientific community, local tourist entities, land use planners, and the broader public are supported in learning multiple ways of knowing about our place. This is a living atlas that will continue to be updated as more layers and stories become available. 
 While exploring the atlas, think about your own relationship with geology, with the landscape.</p> 
